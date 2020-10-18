@@ -1,5 +1,5 @@
 import React from "react";
-import {Router, Route, Link } from "react-router-dom";
+import {BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 function App() {
   return (
@@ -11,10 +11,10 @@ function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/about">Merge</Link>
             </li>
             <li>
-              <Link to="/contact">Contact</Link>
+              <Link to="/contact">Bubble</Link>
             </li>
           </ul>
         </nav>
@@ -23,8 +23,5 @@ function App() {
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} /> */}
       </main>
-    </Router>
-  );
-}
-
+    </Router>)};
 export default App;
