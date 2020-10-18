@@ -1,10 +1,29 @@
-import React from 'react';
+import React from "react";
+import {Router, Route, Link } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      This is a react app. Looks like i'm going to learn functional components vs class based
-    </div>
+    <Router>
+      <main>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* <Route path="/" exact component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} /> */}
+      </main>
+    </Router>
   );
 }
 
