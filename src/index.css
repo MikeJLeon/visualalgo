@@ -14,7 +14,9 @@ code {
 .graph{
   display:flex;
   list-style:none;
-  max-height:200px;
-  height:200px;
+  height:100vh;
   overflow:hidden;
+}
+.dataBar:hover{
+  background-color:#2b918b !important;
 }
