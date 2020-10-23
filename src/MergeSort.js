@@ -21,45 +21,49 @@ function merge(leftArray, rightArray) {
   let indexLeft = 0;
   let indexRight = 0;
   let newArray = [];
-  let timer = setInterval(() => {
-    console.log(leftArray, rightArray);
-    if (leftArray.length > indexLeft && rightArray.length > indexRight) {
-      let currentLeft = document.querySelector(
-        'li[data-id="' + leftArray[indexLeft].id + '"]'
-      );
-      console.log(currentLeft);
-      clearInterval(timer);
-      return;
-      let currentRight = document.querySelector(
-        'li[data-id="' + rightArray[indexRight].id + '"]'
-      );
+  let iteration = 0;
+  console.log(leftArray, rightArray);
+  while (leftArray.length > indexLeft && rightArray.length > indexRight) {
+    let currentLeft = document.querySelector(
+      'li[data-id="' + leftArray[indexLeft].id + '"]'
+    );
+    let currentRight = document.querySelector(
+      'li[data-id="' + rightArray[indexRight].id + '"]'
+    );
+    setTimeout(() => {
       currentLeft.classList.add("active");
       currentRight.classList.add("active");
-      console.log(leftArray, rightArray, newArray);
+    }, 50 * iteration);
+    console.log(leftArray, rightArray, newArray);
 
-      if (leftArray[indexLeft].value < rightArray[indexRight].value) {
-        console.log(leftArray[indexLeft].value + "-left");
-        newArray.push(leftArray[indexLeft]);
-        indexLeft++;
-      } else {
-        console.log(rightArray[indexRight].value + "-right");
-        newArray.push(rightArray[indexRight]);
-        indexRight++;
-      }
+    if (leftArray[indexLeft].value < rightArray[indexRight].value) {
+      setTimeout(() => {
+        currentLeft.classList.remove("active");
+      }, 50 * iteration);
+      console.log(leftArray[indexLeft].value + "-left");
+      newArray.push(leftArray[indexLeft]);
+      indexLeft++;
     } else {
-      if (leftArray.length > indexLeft) {
-        console.log(leftArray, indexLeft);
-        newArray.push(...leftArray.slice(indexLeft));
-      } else {
-        console.log(rightArray, indexRight);
-        newArray.push(...rightArray.slice(indexRight));
-      }
-      console.log(newArray, leftArray, rightArray);
-      clearInterval(timer);
-      return newArray;
+      setTimeout(() => {
+        currentRight.classList.remove("active");
+      }, 50 * iteration);
+      console.log(rightArray[indexRight].value + "-right");
+      newArray.push(rightArray[indexRight]);
+      indexRight++;
     }
-  }, 50);
+    iteration++;
+  }
+  if (leftArray.length > indexLeft) {
+    console.log(leftArray, indexLeft);
+    newArray.push(...leftArray.slice(indexLeft));
+  } else {
+    console.log(rightArray, indexRight);
+    newArray.push(...rightArray.slice(indexRight));
+  }
+  console.log(newArray, leftArray, rightArray);
+  return newArray;
 }
+
 function sort(array, setArray) {
   if (array.length <= 1) {
     return array;
@@ -77,7 +81,7 @@ function sort(array, setArray) {
 }
 function MergeSort() {
   const [array, setArray] = useState([]);
-  const [length, setLength] = useState(30);
+  const [length, setLength] = useState(5);
   return (
     <div>
       <button onClick={() => createGraph(array, setArray, length)}>
