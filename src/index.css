@@ -20,3 +20,7 @@ code {
 .dataBar:hover{
   background-color:#2b918b !important;
 }
+
+.active{
+  background-color:red !important;
+}

@@ -4,49 +4,64 @@ function createGraph(array, setArray, length) {
   console.log(array);
   let newArray = [];
   for (let i = 0; i < length; i++) {
-    newArray.push(Math.floor(Math.random() * (100 - 1) + 1));
+    newArray.push({ id: i, value: Math.floor(Math.random() * (100 - 1) + 1) });
   }
   console.log(newArray);
   setArray(newArray);
 }
-function merge(leftArray, rightArray){
-  if(!leftArray || leftArray.length == 0){
+function merge(leftArray, rightArray) {
+  if (!leftArray || leftArray.length == 0) {
     console.log(rightArray);
     return rightArray;
   }
-  if(!rightArray || rightArray.length == 0){
+  if (!rightArray || rightArray.length == 0) {
     console.log(leftArray);
     return leftArray;
   }
   let indexLeft = 0;
   let indexRight = 0;
   let newArray = [];
-  while(leftArray.length > indexLeft && rightArray.length > indexRight){
-    console.log(leftArray, rightArray , newArray);
-    if(leftArray[indexLeft] < rightArray[indexRight]){
-      console.log(leftArray[indexLeft] + "-left");
-      newArray.push(leftArray[indexLeft]);
-      indexLeft++;
-     
-    }else{
-      console.log(rightArray[indexRight] + "-right")
-      newArray.push(rightArray[indexRight]);
-      indexRight++;
+  let timer = setInterval(() => {
+    console.log(leftArray, rightArray);
+    if (leftArray.length > indexLeft && rightArray.length > indexRight) {
+      let currentLeft = document.querySelector(
+        'li[data-id="' + leftArray[indexLeft].id + '"]'
+      );
+      console.log(currentLeft);
+      clearInterval(timer);
+      return;
+      let currentRight = document.querySelector(
+        'li[data-id="' + rightArray[indexRight].id + '"]'
+      );
+      currentLeft.classList.add("active");
+      currentRight.classList.add("active");
+      console.log(leftArray, rightArray, newArray);
+
+      if (leftArray[indexLeft].value < rightArray[indexRight].value) {
+        console.log(leftArray[indexLeft].value + "-left");
+        newArray.push(leftArray[indexLeft]);
+        indexLeft++;
+      } else {
+        console.log(rightArray[indexRight].value + "-right");
+        newArray.push(rightArray[indexRight]);
+        indexRight++;
+      }
+    } else {
+      if (leftArray.length > indexLeft) {
+        console.log(leftArray, indexLeft);
+        newArray.push(...leftArray.slice(indexLeft));
+      } else {
+        console.log(rightArray, indexRight);
+        newArray.push(...rightArray.slice(indexRight));
+      }
+      console.log(newArray, leftArray, rightArray);
+      clearInterval(timer);
+      return newArray;
     }
-  }
-  if(leftArray.length > indexLeft){
-    console.log(leftArray, indexLeft);
-    newArray.push(...leftArray.slice(indexLeft));
-  }else{
-    console.log(rightArray, indexRight);
-    newArray.push(...rightArray.slice(indexRight));
-  }
-  console.log(newArray, leftArray, rightArray);
-  return  newArray;
+  }, 50);
 }
 function sort(array, setArray) {
-
-  if(array.length <= 1){
+  if (array.length <= 1) {
     return array;
   }
   let middle = Math.floor(array.length / 2);
@@ -56,7 +71,7 @@ function sort(array, setArray) {
   let leftArray = sort(left, setArray);
   let rightArray = sort(right, setArray);
   let newArray = merge(leftArray, rightArray);
-  console.log(newArray, leftArray, rightArray,  "FINAL");
+  console.log(newArray, leftArray, rightArray, "FINAL");
   setArray(newArray);
   return newArray;
 }
@@ -71,18 +86,20 @@ function MergeSort() {
       <button onClick={() => sort(array, setArray)}>Sort</button>
 
       <div className="graph">
-        {array.map((value) => (
+        {array.map((value, index) => (
           <li
+            key={index}
+            data-id={value.id}
             className="dataBar"
             style={{
               backgroundColor: "black",
               border: "1px solid white",
-              height: value + "%",
+              height: value.value + "%",
               color: "red",
-              flexGrow:1,
+              flexGrow: 1,
             }}
           >
-            {value}
+            {value.value}
           </li>
         ))}
       </div>
