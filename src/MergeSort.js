@@ -1,99 +1,91 @@
 import React, { useState } from "react";
 
 function createGraph(array, setArray, length) {
-  console.log(array);
   let newArray = [];
   for (let i = 0; i < length; i++) {
     newArray.push({ id: i, value: Math.floor(Math.random() * (100 - 1) + 1) });
   }
-  console.log(newArray);
   setArray(newArray);
 }
-async function merge(leftArray, rightArray) {
+function merge(leftArray, rightArray, setArray) {
   if (!leftArray || leftArray.length == 0) {
-    console.log(rightArray);
     return rightArray;
   }
   if (!rightArray || rightArray.length == 0) {
-    console.log(leftArray);
     return leftArray;
   }
   let indexLeft = 0;
   let indexRight = 0;
   let newArray = [];
   let iteration = 0;
-  console.log(leftArray, rightArray);
   while (leftArray.length > indexLeft && rightArray.length > indexRight) {
-    let somePromise = await new Promise((resolve) => {
-      resolve("Hello");
-    });
-    somePromise.then(() => {
-      console.log("TEST");
-    });
-    // let currentLeft = document.querySelector(
-    //   'li[data-id="' + leftArray[indexLeft].id + '"]'
-    // );
-    // let currentRight = document.querySelector(
-    //   'li[data-id="' + rightArray[indexRight].id + '"]'
-    // );
-    // setTimeout(() => {
-    //   currentLeft.classList.add("active");
-    //   currentRight.classList.add("active");
-    // }, 50 * iteration);
-    // console.log(leftArray, rightArray, newArray);
-
-    // if (leftArray[indexLeft].value < rightArray[indexRight].value) {
-    //   setTimeout(() => {
-    //     currentLeft.classList.remove("active");
-    //   }, 50 * iteration);
-    //   console.log(leftArray[indexLeft].value + "-left");
-    //   newArray.push(leftArray[indexLeft]);
-    //   indexLeft++;
-    // } else {
-    //   setTimeout(() => {
-    //     currentRight.classList.remove("active");
-    //   }, 50 * iteration);
-    //   console.log(rightArray[indexRight].value + "-right");
-    //   newArray.push(rightArray[indexRight]);
-    //   indexRight++;
-    // }
-    // iteration++;
+    let currentLeft = document.querySelector(
+      'li[data-id="' + leftArray[indexLeft].id + '"]'
+    );
+    let currentRight = document.querySelector(
+      'li[data-id="' + rightArray[indexRight].id + '"]'
+    );
+    if (leftArray[indexLeft].value < rightArray[indexRight].value) {
+      newArray.push(leftArray[indexLeft]);
+      indexLeft++;
+    } else {
+      newArray.push(rightArray[indexRight]);
+      indexRight++;
+    }
   }
   if (leftArray.length > indexLeft) {
-    console.log(leftArray, indexLeft);
     newArray.push(...leftArray.slice(indexLeft));
   } else {
-    console.log(rightArray, indexRight);
     newArray.push(...rightArray.slice(indexRight));
   }
-  console.log(newArray, leftArray, rightArray);
   return newArray;
 }
 
-function sort(array, setArray) {
+function sort(array, setArray, steps, length) {
   if (array.length <= 1) {
     return array;
   }
   let middle = Math.floor(array.length / 2);
   let left = array.slice(0, middle);
   let right = array.slice(middle);
-  console.log(left, right, "-both");
-  let leftArray = sort(left, setArray);
-  let rightArray = sort(right, setArray);
-  let newArray = merge(leftArray, rightArray);
-  console.log(newArray, leftArray, rightArray, "FINAL");
-  setArray(newArray);
+  let leftArray = sort(left, setArray, steps, length);
+  let rightArray = sort(right, setArray, steps, length);
+  let newArray = merge(leftArray, rightArray, setArray);
+  steps.push(newArray);
+  console.log(steps);
+  console.log(steps[steps.length - 1].length === length);
+  if (steps[steps.length - 1].length === length) {
+    let iterator = 1;
+    while (steps.length > 0) {
+      let activeBars = steps.shift();
+      console.log(activeBars);
+      console.log(iterator);
+      for (let bar of activeBars) {
+        setTimeout(() => {
+          document
+            .querySelector('li[data-id="' + bar.id + '"]')
+            .classList.add("active");
+        }, 500 * iterator);
+      }
+      while(document.getElementsByClassName("active").length != 0){
+        setTimeout(() => {
+          document.getElementsByClassName("active")[0].classList.remove("active");
+        }, 1000 * iterator);
+      }
+      iterator++;
+    }
+  }
   return newArray;
 }
 function MergeSort() {
   const [array, setArray] = useState([]);
-  const [length, setLength] = useState(5);
+  const [length, setLength] = useState(100);
   return (
     <div>
       <button onClick={() => createGraph(array, setArray, length)}>
         Create
       </button>
-      <button onClick={() => sort(array, setArray)}>Sort</button>
+      <button onClick={() => sort(array, setArray, [], length)}>Sort</button>
 
       <div className="graph">
         {array.map((value, index) => (
