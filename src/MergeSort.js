@@ -9,7 +9,7 @@ function createGraph(array, setArray, length) {
   console.log(newArray);
   setArray(newArray);
 }
-function merge(leftArray, rightArray) {
+async function merge(leftArray, rightArray) {
   if (!leftArray || leftArray.length == 0) {
     console.log(rightArray);
     return rightArray;
@@ -24,34 +24,40 @@ function merge(leftArray, rightArray) {
   let iteration = 0;
   console.log(leftArray, rightArray);
   while (leftArray.length > indexLeft && rightArray.length > indexRight) {
-    let currentLeft = document.querySelector(
-      'li[data-id="' + leftArray[indexLeft].id + '"]'
-    );
-    let currentRight = document.querySelector(
-      'li[data-id="' + rightArray[indexRight].id + '"]'
-    );
-    setTimeout(() => {
-      currentLeft.classList.add("active");
-      currentRight.classList.add("active");
-    }, 50 * iteration);
-    console.log(leftArray, rightArray, newArray);
+    let somePromise = await new Promise((resolve) => {
+      resolve("Hello");
+    });
+    somePromise.then(() => {
+      console.log("TEST");
+    });
+    // let currentLeft = document.querySelector(
+    //   'li[data-id="' + leftArray[indexLeft].id + '"]'
+    // );
+    // let currentRight = document.querySelector(
+    //   'li[data-id="' + rightArray[indexRight].id + '"]'
+    // );
+    // setTimeout(() => {
+    //   currentLeft.classList.add("active");
+    //   currentRight.classList.add("active");
+    // }, 50 * iteration);
+    // console.log(leftArray, rightArray, newArray);
 
-    if (leftArray[indexLeft].value < rightArray[indexRight].value) {
-      setTimeout(() => {
-        currentLeft.classList.remove("active");
-      }, 50 * iteration);
-      console.log(leftArray[indexLeft].value + "-left");
-      newArray.push(leftArray[indexLeft]);
-      indexLeft++;
-    } else {
-      setTimeout(() => {
-        currentRight.classList.remove("active");
-      }, 50 * iteration);
-      console.log(rightArray[indexRight].value + "-right");
-      newArray.push(rightArray[indexRight]);
-      indexRight++;
-    }
-    iteration++;
+    // if (leftArray[indexLeft].value < rightArray[indexRight].value) {
+    //   setTimeout(() => {
+    //     currentLeft.classList.remove("active");
+    //   }, 50 * iteration);
+    //   console.log(leftArray[indexLeft].value + "-left");
+    //   newArray.push(leftArray[indexLeft]);
+    //   indexLeft++;
+    // } else {
+    //   setTimeout(() => {
+    //     currentRight.classList.remove("active");
+    //   }, 50 * iteration);
+    //   console.log(rightArray[indexRight].value + "-right");
+    //   newArray.push(rightArray[indexRight]);
+    //   indexRight++;
+    // }
+    // iteration++;
   }
   if (leftArray.length > indexLeft) {
     console.log(leftArray, indexLeft);
