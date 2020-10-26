@@ -15,12 +15,18 @@ code {
   display:flex;
   list-style:none;
   height:100vh;
-  overflow:hidden;
+  width:100%;
+}
+.dataBar{
+  flex: 1 1 auto;
+  transition:all 0.15s ease-in-out;
 }
 .dataBar:hover{
   background-color:#2b918b !important;
+  transition:all 0.05s ease-in-out;
 }
 
 .active{
   background-color:red !important;
+  transition:all 0.15s ease-in-out;
 }

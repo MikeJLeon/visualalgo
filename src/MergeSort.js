@@ -5,6 +5,7 @@ function createGraph(array, setArray, length) {
   for (let i = 0; i < length; i++) {
     newArray.push({ id: i, value: Math.floor(Math.random() * (100 - 1) + 1) });
   }
+  console.log(newArray);
   setArray(newArray);
 }
 function merge(leftArray, rightArray, setArray) {
@@ -52,28 +53,36 @@ function sort(array, setArray, steps, length) {
   let rightArray = sort(right, setArray, steps, length);
   let newArray = merge(leftArray, rightArray, setArray);
   steps.push(newArray);
-  console.log(steps);
-  console.log(steps[steps.length - 1].length === length);
   if (steps[steps.length - 1].length === length) {
     let iterator = 1;
     while (steps.length > 0) {
       let activeBars = steps.shift();
-      console.log(activeBars);
-      console.log(iterator);
+      let min = activeBars[0].id;
+      let max = activeBars[0].id;
       for (let bar of activeBars) {
+        if (bar.id < min) {
+          min = bar.id;
+        } else if (bar.id > max) {
+          max = bar.id;
+        }
         setTimeout(() => {
           document
             .querySelector('li[data-id="' + bar.id + '"]')
             .classList.add("active");
-        }, 500 * iterator);
+          setTimeout(() => {
+            document
+              .querySelector('li[data-id="' + bar.id + '"]')
+              .classList.remove("active");
+          }, 100);
+        }, 100 * iterator);
       }
-      while(document.getElementsByClassName("active").length != 0){
-        setTimeout(() => {
-          document.getElementsByClassName("active")[0].classList.remove("active");
-        }, 1000 * iterator);
-      }
+      setTimeout(() => {
+        array.splice(min, activeBars.length, ...activeBars);
+        setArray([...array]);
+      }, 100 * iterator);
       iterator++;
     }
+    return array;
   }
   return newArray;
 }
@@ -98,11 +107,8 @@ function MergeSort() {
               border: "1px solid white",
               height: value.value + "%",
               color: "red",
-              flexGrow: 1,
             }}
-          >
-            {value.value}
-          </li>
+          ></li>
         ))}
       </div>
     </div>
