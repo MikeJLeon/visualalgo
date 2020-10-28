@@ -1,56 +1,60 @@
 import React, { useState } from "react";
-
-function createGraph(array, setArray, length) {
-  console.log(array);
-  let newArray = [];
-  for (let i = 0; i < length; i++) {
-    newArray.push(Math.floor(Math.random() * (50 - 1) + 1));
-  }
-  console.log(newArray);
-  setArray(newArray);
-}
-
-function sortGraph(array, setArray, length) {
-  let currentValue;
-  let newArray = [...array];
-  for (let i = 0; i < newArray.length; i++) {
-    for (let j = i + 1; j < newArray.length; j++) {
-      if (i != j && newArray[i] > newArray[j]) {
-        let hold = newArray[i];
-        newArray[i] = newArray[j];
-        newArray[j] = hold;
-        setArray(newArray);
-      }
-    }
-  }
-  console.log(newArray);
-}
+import createGraph from "./helper/createGraph";
+import MergeSort from "./helper/MergeSort";
+import resetGraph from "./helper/resetGraph";
+import chooseLength from "./helper/chooseLength";
+import chooseSpeed from "./helper/chooseSpeed";
 
 function Home() {
   const [array, setArray] = useState([]);
-  const [length, setLength] = useState(30);
-  console.log(length);
-  console.log(array);
+  const [originalArray, setOriginal] = useState([]);
+  const [length, setLength] = useState(12);
+  const [speed, setSpeed] = useState(100);
   return (
     <div>
-      <button onClick={() => createGraph(array, setArray, length)}>
+      <button
+        onClick={() =>
+          createGraph(array, setArray, length, originalArray, setOriginal)
+        }
+      >
         Create
       </button>
-      <button onClick={() => sortGraph(array, setArray, length)}>Sort</button>
-
+      <button
+        onClick={() => MergeSort(array, setArray, [], originalArray.length, speed)}
+      >
+        Merge Sort
+      </button>
+      <label>Set Length(0 -> 100):</label>
+      <input
+        onChange={(e) => chooseLength(e.target.value, setLength)}
+        type="number"
+        id="length"
+        name="length"
+        min="5"
+        max="100"
+      ></input>
+      <label>Set Speed (Min 5, in MS):</label>
+      <input
+        onChange={(e) => chooseSpeed(e.target.value, setSpeed)}
+        type="number"
+        id="speed"
+        name="speed"
+        min="5"
+      ></input>
+      <button onClick={() => resetGraph(originalArray, setArray)}>Reset</button>
       <div className="graph">
-        {array.map((value) => (
+        {array.map((value, index) => (
           <li
+            key={index}
+            data-id={value.id}
+            className="dataBar"
             style={{
               backgroundColor: "black",
-              width: 20 + "px",
               border: "1px solid white",
-              height: value + "%",
+              height: value.value + "%",
               color: "red",
             }}
-          >
-            {value}
-          </li>
+          ></li>
         ))}
       </div>
     </div>

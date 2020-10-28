@@ -1,13 +1,3 @@
-import React, { useState } from "react";
-
-function createGraph(array, setArray, length) {
-  let newArray = [];
-  for (let i = 0; i < length; i++) {
-    newArray.push({ id: i, value: Math.floor(Math.random() * (100 - 1) + 1) });
-  }
-  console.log(newArray);
-  setArray(newArray);
-}
 function merge(leftArray, rightArray, setArray) {
   if (!leftArray || leftArray.length == 0) {
     return rightArray;
@@ -18,7 +8,6 @@ function merge(leftArray, rightArray, setArray) {
   let indexLeft = 0;
   let indexRight = 0;
   let newArray = [];
-  let iteration = 0;
   while (leftArray.length > indexLeft && rightArray.length > indexRight) {
     let currentLeft = document.querySelector(
       'li[data-id="' + leftArray[indexLeft].id + '"]'
@@ -42,18 +31,24 @@ function merge(leftArray, rightArray, setArray) {
   return newArray;
 }
 
-function sort(array, setArray, steps, length) {
+function MergeSort(array, setArray, steps, length, speed) {
   if (array.length <= 1) {
     return array;
   }
+  console.log(...steps);
   let middle = Math.floor(array.length / 2);
   let left = array.slice(0, middle);
   let right = array.slice(middle);
-  let leftArray = sort(left, setArray, steps, length);
-  let rightArray = sort(right, setArray, steps, length);
+  let leftArray = MergeSort(left, setArray, steps, length, speed);
+  let rightArray = MergeSort(right, setArray, steps, length, speed);
   let newArray = merge(leftArray, rightArray, setArray);
   steps.push(newArray);
   if (steps[steps.length - 1].length === length) {
+    console.log(newArray === array);
+    console.log(newArray, array);
+    if (newArray === array) {
+      return;
+    }
     let iterator = 1;
     while (steps.length > 0) {
       let activeBars = steps.shift();
@@ -66,6 +61,9 @@ function sort(array, setArray, steps, length) {
           max = bar.id;
         }
         setTimeout(() => {
+          console.log(bar);
+          console.log(document.querySelector('li[data-id="' + bar.id + '"]'));
+          console.log(document.getElementsByClassName("dataBar"));
           document
             .querySelector('li[data-id="' + bar.id + '"]')
             .classList.add("active");
@@ -73,46 +71,18 @@ function sort(array, setArray, steps, length) {
             document
               .querySelector('li[data-id="' + bar.id + '"]')
               .classList.remove("active");
-          }, 100);
-        }, 100 * iterator);
+          }, speed);
+        }, speed * iterator);
       }
       setTimeout(() => {
         array.splice(min, activeBars.length, ...activeBars);
         setArray([...array]);
-      }, 100 * iterator);
+      }, speed * iterator);
       iterator++;
     }
     return array;
   }
   return newArray;
-}
-function MergeSort() {
-  const [array, setArray] = useState([]);
-  const [length, setLength] = useState(100);
-  return (
-    <div>
-      <button onClick={() => createGraph(array, setArray, length)}>
-        Create
-      </button>
-      <button onClick={() => sort(array, setArray, [], length)}>Sort</button>
-
-      <div className="graph">
-        {array.map((value, index) => (
-          <li
-            key={index}
-            data-id={value.id}
-            className="dataBar"
-            style={{
-              backgroundColor: "black",
-              border: "1px solid white",
-              height: value.value + "%",
-              color: "red",
-            }}
-          ></li>
-        ))}
-      </div>
-    </div>
-  );
 }
 
 export default MergeSort;
