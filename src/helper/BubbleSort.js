@@ -7,10 +7,9 @@ function BubbleSort(array, setArray, steps, length, speed) {
     for (let j = 0; j < newArray.length - i - 1; j++) {
       steps.push([newArray[j], newArray[j + 1]]);
       setTimeout(() => {
-        document
-          .getElementsByClassName("dataBar")
-          [j + 1].classList.add("active");
+        document.getElementsByClassName("dataBar")[j + 1].classList.add("active");
         document.getElementsByClassName("dataBar")[j].classList.add("active");
+        console.log(j, j + 1, document.getElementsByClassName("dataBar")[j + 1], document.getElementsByClassName("dataBar")[j])
         setTimeout(() => {
           document
             .getElementsByClassName("dataBar")
@@ -34,8 +33,8 @@ function BubbleSort(array, setArray, steps, length, speed) {
       }
       counter++;
     }
-    if(!notSorted){
-        break;
+    if (!notSorted) {
+      break;
     }
   }
 }
