@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import createGraph from "./helper/createGraph";
 import MergeSort from "./helper/MergeSort";
+import BubbleSort from "./helper/BubbleSort";
 import resetGraph from "./helper/resetGraph";
 import chooseLength from "./helper/chooseLength";
 import chooseSpeed from "./helper/chooseSpeed";
@@ -23,6 +24,11 @@ function Home() {
         onClick={() => MergeSort(array, setArray, [], originalArray.length, speed)}
       >
         Merge Sort
+      </button>
+      <button
+        onClick={() => BubbleSort(array, setArray, [], originalArray.length, speed)}
+      >
+        BubbleSort
       </button>
       <label>Set Length(0 -> 100):</label>
       <input
