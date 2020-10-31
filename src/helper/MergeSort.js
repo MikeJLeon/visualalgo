@@ -7,40 +7,15 @@ function merge(leftArray, rightArray, setArray) {
   }
   let indexLeft = 0;
   let indexRight = 0;
-  let iterator = 1;
   let newArray = [];
   while (leftArray.length > indexLeft && rightArray.length > indexRight) {
-    console.log(leftArray);
-    console.log(rightArray);
-    let currentLeft = document.getElementsByClassName("dataBar")[leftArray[indexLeft].id];
-    let currentRight = document.getElementsByClassName("dataBar")[rightArray[indexRight].id];
-
     if (leftArray[indexLeft].value < rightArray[indexRight].value) {
-      setTimeout(() => {
-        currentLeft.classList.add("active");
-        currentRight.classList.add("active");
-        console.log(iterator, indexLeft);
-        newArray.push(leftArray[indexLeft]);
-        setTimeout(() => {
-          currentLeft.classList.remove("active");
-          currentRight.classList.remove("active");
-        }, 500);
-      }, 500 * iterator);
+      newArray.push(leftArray[indexLeft]);
       indexLeft++;
     } else {
-      setTimeout(() => {
-        currentLeft.classList.add("active");
-        currentRight.classList.add("active");
-        console.log(iterator, indexRight);
-        newArray.push(rightArray[indexRight]);
-        setTimeout(() => {
-          currentLeft.classList.remove("active");
-          currentRight.classList.remove("active");
-        }, 500);
-      }, 500 * iterator);
+      newArray.push(rightArray[indexRight]);
       indexRight++;
     }
-    iterator++;
   }
   if (leftArray.length > indexLeft) {
     newArray.push(...leftArray.slice(indexLeft));
@@ -60,10 +35,11 @@ function MergeSort(array, setArray, steps, length, speed) {
   let leftArray = MergeSort(left, setArray, steps, length, speed);
   let rightArray = MergeSort(right, setArray, steps, length, speed);
   let newArray = merge(leftArray, rightArray, setArray);
+  if(newArray.length === length){
+    setArray([...newArray]);
+  }
   // steps.push(newArray);
   // if (steps[steps.length - 1].length === length) {
-  //   console.log(newArray === array);
-  //   console.log(newArray, array);
   //   if (newArray === array) {
   //     return;
   //   }
@@ -79,16 +55,17 @@ function MergeSort(array, setArray, steps, length, speed) {
   //         max = bar.id;
   //       }
   //       setTimeout(() => {
-  //         console.log(bar);
-  //         console.log(document.querySelector('li[data-id="' + bar.id + '"]'));
-  //         console.log(document.getElementsByClassName("dataBar"));
-  //         document
-  //           .querySelector('li[data-id="' + bar.id + '"]')
-  //           .classList.add("active");
+  //         console.log(bar.id);
+  //         console.log(document.getElementsByClassName("dataBar")[bar.id]);
+  //         document.getElementsByClassName("dataBar")[bar.id].classList.add("active");
+  //         // document
+  //         //   .querySelector('li[data-id="' + bar.id + '"]')
+  //         //   .classList.add("active");
   //         setTimeout(() => {
-  //           document
-  //             .querySelector('li[data-id="' + bar.id + '"]')
-  //             .classList.remove("active");
+  //           document.getElementsByClassName("dataBar")[bar.id].classList.remove("active");
+  //           // document
+  //           //   .querySelector('li[data-id="' + bar.id + '"]')
+  //           //   .classList.remove("active");
   //         }, speed);
   //       }, speed * iterator);
   //     }
@@ -98,7 +75,7 @@ function MergeSort(array, setArray, steps, length, speed) {
   //     }, speed * iterator);
   //     iterator++;
   //   }
-  //   return array;
+    // return array;
   // }
   return newArray;
 }
