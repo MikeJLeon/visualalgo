@@ -9,7 +9,7 @@ import chooseSpeed from "./helper/chooseSpeed";
 function Home() {
   const [array, setArray] = useState([]);
   const [originalArray, setOriginal] = useState([]);
-  const [length, setLength] = useState(12);
+  const [length, setLength] = useState(5);
   const [speed, setSpeed] = useState(100);
   return (
     <div>
