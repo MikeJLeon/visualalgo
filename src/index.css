@@ -19,14 +19,11 @@ code {
 }
 .dataBar{
   flex: 1 1 auto;
-  transition:height 0.15s ease-in-out;
 }
 .dataBar:hover{
   background-color:#2b918b !important;
-  transition:all 0.05s ease-in-out;
 }
 
 .active{
   background-color:red !important;
-  transition:height 0.15s ease-in-out;
 }
