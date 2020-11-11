@@ -4,7 +4,7 @@ function createGraph(array, setArray, length, originalArray, setOriginal) {
     newArray.push({ id: i, value: Math.floor(Math.random() * (100 - 1) + 1) });
   }
   console.log(newArray.length);
-  console.log([...newArray] );
+  console.log(...newArray);
   setArray(newArray);
   setOriginal([...newArray]);
 }
