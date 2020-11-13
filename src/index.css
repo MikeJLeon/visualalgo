@@ -19,11 +19,9 @@ code {
 }
 .dataBar{
   flex: 1 1 auto;
+  transition: all 0.25s ease-in-out
 }
-.dataBar:hover{
-  background-color:#2b918b !important;
-}
-
 .active{
   background-color:red !important;
+  transition: all 0.25s ease-in-out
 }

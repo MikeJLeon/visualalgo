@@ -10,14 +10,15 @@ function merge(array, leftArray, rightArray, setArray) {
   let newArray = [];
   let minID = leftArray[0].id;
   while (leftArray.length > indexLeft && rightArray.length > indexRight) {
+    console.log(minID, leftArray[indexLeft].id, rightArray[indexRight].id);
     let objToAdd = {};
     // console.log(leftArray[indexLeft].id, rightArray[indexRight].id, "START");
     if (leftArray[indexLeft].value > rightArray[indexRight].value) {
-      objToAdd = {id:minID, value:rightArray[indexRight].value};
+      objToAdd = { id: minID, value: rightArray[indexRight].value };
       newArray.push(objToAdd);
       indexRight++;
     } else {
-      objToAdd = {id:minID, value:leftArray[indexLeft].value};
+      objToAdd = { id: minID, value: leftArray[indexLeft].value };
       newArray.push(objToAdd);
       indexLeft++;
     }
@@ -25,21 +26,21 @@ function merge(array, leftArray, rightArray, setArray) {
     // console.log(...newArray, "end");
   }
   if (leftArray.length > indexLeft) {
-    for(let obj of leftArray.slice(indexLeft)){
+    for (let obj of leftArray.slice(indexLeft)) {
       obj.id = minID;
       newArray.push(obj);
       minID++;
     }
     //newArray.push(...leftArray.slice(indexLeft));
   } else {
-    for(let obj of rightArray.slice(indexRight)){
+    for (let obj of rightArray.slice(indexRight)) {
       obj.id = minID;
       newArray.push(obj);
       minID++;
     }
     //newArray.push(...rightArray.slice(indexRight));
   }
-  return newArray;
+  return [...newArray];
 }
 
 function MergeSort(array, setArray, steps, length, speed) {
@@ -51,30 +52,37 @@ function MergeSort(array, setArray, steps, length, speed) {
   let right = array.slice(middle);
   let leftArray = MergeSort(left, setArray, steps, length, speed);
   let rightArray = MergeSort(right, setArray, steps, length, speed);
-  let newArray = merge(array, leftArray, rightArray, setArray);
-  console.log(...newArray,"NEW ARRAY");
+  let newArray = merge(array, [...leftArray], [...rightArray], setArray);
+  console.log([...newArray], "NEW ARRAY");
   steps.push([...newArray]);
   if (newArray.length === length) {
+    console.log(...steps);
     let iterator = 1;
-    for (let activeBars of steps) {
+    for (let activeBars of [...steps]) {
       let min = activeBars[0].id;
-      console.log(...activeBars);
+      console.log(activeBars[0].id, activeBars[activeBars.length - 1].id)
       for (let bar of activeBars) {
+        console.log(...activeBars);
         if (bar.id < min) {
           min = bar.id;
         }
-        setTimeout(() => {
-          document
-            .getElementsByClassName("dataBar")
-            [bar.id].classList.add("active");
+        if (
+          bar.id === activeBars[0].id ||
+          bar.id === activeBars[activeBars.length - 1].id
+        ) {
           setTimeout(() => {
-            //setArray([...array.splice(min, activeBars.length, ...activeBars)]);
-            //console.log(...array);
             document
               .getElementsByClassName("dataBar")
-              [bar.id].classList.remove("active");
-          }, speed);
-        }, speed * iterator);
+              [bar.id].classList.add("active");
+            setTimeout(() => {
+              //setArray([...array.splice(min, activeBars.length, ...activeBars)]);
+              //console.log(...array);
+              document
+                .getElementsByClassName("dataBar")
+                [bar.id].classList.remove("active");
+            }, speed);
+          }, speed * iterator);
+        }
       }
       setTimeout(() => {
         array.splice(activeBars[0].id, activeBars.length, ...activeBars);
